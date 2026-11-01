@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <!-- SEO TITLE -->
+    <title>
+        Time in Canada Now | Live Canadian Clocks & Time Zones
+    </title>
+
+    <!-- SEO DESCRIPTION -->
+    <meta name="description"
+          content="What time is it in Canada right now? Check live local time in Toronto, Vancouver, Calgary, Montreal and cities across all 13 Canadian provinces and territories.">
+
+    <!-- SEARCH ENGINE INDEXING -->
+    <meta name="robots" content="index, follow">
+
+    <!-- CANONICAL URL -->
+    <link rel="canonical" href="https://timecanada.ca/">
+
+    <!-- SOCIAL SHARING -->
+    <meta property="og:type" content="website">
+
+    <meta property="og:title"
+          content="Time in Canada Now | Live Canadian Clocks">
+
+    <meta property="og:description"
+          content="Explore live clocks and time zones across Canada. Find the current local time in Canadian cities and provinces.">
+
+    <meta property="og:url"
+          content="https://timecanada.ca/">
+
+    <meta property="og:locale" content="en_CA">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <strong>
+            <span>✦</span>
+            TIME CANADA.ca
+        </strong>
+
+        <span style="font-size: 14px; color: #6d7d8f">
+            🍁 Canada Live time zones · Updated with New Day light saving Oct 31st, 2026 Rules
+        </span>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="container">
+
+        <!-- PAGE HEADING -->
+        <div class="heading">
+
+            <div>
+                <div class="eyebrow">
+                    From coast to coast to coast
+                </div>
+
+                <h1>What time is it in Canada?</h1>
+
+                <p>
+                    Explore live local times across all 13 provinces and territories.
+                </p>
+            </div>
+
+            <div class="live">
+                LIVE · Updates every second
+            </div>
+
+        </div>
+
+        <!-- SEARCH CONTROLS AND FEATURED CLOCK -->
+        <section class="panel topcontrols">
+
+            <!-- SEARCH CONTROLS -->
+            <div class="controls">
+
+                <div>
+                    <label for="province">
+                        PROVINCE / TERRITORY
+                    </label>
+
+                    <select id="province"></select>
+                </div>
+
+                <div>
+                    <label for="city">
+                        CITY / INCORPORATED LOCATION
+                    </label>
+
+                    <select id="city"></select>
+                </div>
+
+                <div class="controlrow">
+
+                    <div>
+                        <label for="format">
+                            CLOCK FORMAT
+                        </label>
+
+                        <select id="format">
+                            <option value="12">
+                                12-hour (AM/PM)
+                            </option>
+
+                            <option value="24">
+                                24-hour
+                            </option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="search">
+                            FIND A LOCATION
+                        </label>
+
+                        <input
+                            id="search"
+                            placeholder="Search cities, province"
+                        >
+                    </div>
+
+                </div>
+
+                <p style="font-size: 14px">
+                    Select city to update the featured
+                    clock.
+                </p>
+
+            </div>
+
+            <!-- MAIN FEATURED CLOCK -->
+            <div class="feature">
+
+                <div class="eyebrow">
+                    Selected location
+                </div>
+
+                <h2 id="featuredName">
+                    Toronto, Ontario
+                </h2>
+
+                <small id="featuredZone">
+                    Eastern Time
+                </small>
+
+                <div class="clock" id="featuredClock">
+                    --:--:--
+                </div>
+
+                <p id="featuredDate">
+                    Loading local date…
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- CANADA MAP -->
+        <section class="layout">
+
+            <div class="panel">
+
+                <!-- MAP HEADER -->
+                <div class="panelhead">
+
+                    <b>🍁 Search Canada by Map</b>
+
+                    <span style="font-size: 14px; color: #718092;">
+                        Click a province
+                    </span>
+
+                </div>
+
+                <!-- SVG MAP -->
+                <div class="mapwrap">
+
+                    <svg
+                        viewBox="0 0 950 600"
+                        role="img"
+                        aria-label="Stylized clickable map of Canadian provinces and territories"
+                    >
+
+                        <!-- WATER BACKGROUND -->
+                        <path
+                            class="water"
+                            d="M0 0H950V600H0Z"
+                        />
+
+                        <!-- PROVINCE AND TERRITORY SHAPES -->
+                        <g id="shapes">
+
+                            <!-- YUKON -->
+                            <path
+                                class="province"
+                                data-p="YT"
+                                d="
+                                    M87 113
+                                    110 96 129 104 145 101
+                                    163 114 181 111 196 118
+                                    189 162 182 199 190 231
+                                    161 243 144 254 116 268
+                                    99 249 94 221 75 195
+                                    79 161 67 144Z
+                                "
+                            />
+
+                            <!-- NORTHWEST TERRITORIES -->
+                            <path
+                                class="province"
+                                data-p="NT"
+                                d="
+                                    M196 118
+                                    229 111 254 112 279 104
+                                    310 113 335 103 351 115
+                                    350 142 365 167 352 195
+                                    360 233 346 251 308 255
+                                    278 273 246 252 216 246
+                                    190 231 182 199 189 162Z
+                                "
+                            />
+
+                            <!-- NUNAVUT -->
+                            <path
+                                class="province"
+                                data-p="NU"
+                                d="
+                                    M352 115
+                                    377 106 397 117 416 95
+                                    427 69 448 77 461 58
+                                    482 76 487 107 513 116
+                                    522 79 542 48 564 58
+                                    576 86 597 66 616 82
+                                    608 108 582 127 577 153
+                                    602 164 622 151 644 169
+                                    660 192 641 213 617 208
+                                    602 239 579 257 552 246
+                                    528 259 492 250 462 236
+                                    431 218 405 236 380 220
+                                    360 233 352 195 365 167
+                                    350 142Z
+
+                                    M670 110
+                                    692 96 711 110
+                                    703 133 680 138Z
+
+                                    M720 168
+                                    738 158 746 179
+                                    731 193Z
+                                "
+                            />
+
+                            <!-- BRITISH COLUMBIA -->
+                            <path
+                                class="province"
+                                data-p="BC"
+                                d="
+                                    M75 195
+                                    94 221 99 249 116 268
+                                    144 254 161 243 190 231
+                                    197 276 199 323 192 349
+                                    183 382 175 417 168 461
+                                    150 459 133 447 113 441
+                                    106 422 92 410 90 391
+                                    79 384 83 366 69 350
+                                    64 329 52 322 57 304
+                                    46 287 59 267 62 245
+                                    70 223Z
+
+                                    M38 333
+                                    49 349 43 370 33 358Z
+
+                                    M57 382
+                                    66 398 58 420 47 404Z
+                                "
+                            />
+
+                            <!-- ALBERTA -->
+                            <path
+                                class="province"
+                                data-p="AB"
+                                d="
+                                    M197 276
+                                    239 282 278 278 279 320
+                                    280 359 280 405 279 455
+                                    246 455 212 458 168 461
+                                    175 417 183 382 192 349
+                                    199 323Z
+                                "
+                            />
+
+                            <!-- SASKATCHEWAN -->
+                            <path
+                                class="province"
+                                data-p="SK"
+                                d="
+                                    M278 278
+                                    316 280 357 276 360 321
+                                    362 366 365 406 368 452
+                                    326 454 279 455 280 405
+                                    280 359 279 320Z
+                                "
+                            />
+
+                            <!-- MANITOBA -->
+                            <path
+                                class="province"
+                                data-p="MB"
+                                d="
+                                    M357 276
+                                    390 279 416 268 442 280
+                                    449 312 464 339 456 365
+                                    460 390 450 416 452 450
+                                    412 453 368 452 365 406
+                                    362 366 360 321Z
+                                "
+                            />
+
+                            <!-- ONTARIO -->
+                            <path
+                                class="province"
+                                data-p="ON"
+                                d="
+                                    M464 293
+                                    491 284 518 295 543 290
+                                    567 303 582 323 606 341
+                                    616 361 603 381 611 404
+                                    630 420 650 437 641 453
+                                    626 463 615 488 599 490
+                                    582 483 569 470 555 474
+                                    543 466 532 452 520 453
+                                    510 433 495 427 477 442
+                                    452 450 450 416 460 390
+                                    456 365 464 339 449 312Z
+                                "
+                            />
+
+                            <!-- QUEBEC -->
+                            <path
+                                class="province"
+                                data-p="QC"
+                                d="
+                                    M567 303
+                                    577 273 598 252 623 240
+                                    648 232 673 243 692 260
+                                    709 277 699 301 690 324
+                                    687 345 699 365 715 378
+                                    730 395 749 410 737 425
+                                    715 434 700 450 682 451
+                                    662 441 650 437 630 420
+                                    611 404 603 381 616 361
+                                    606 341 582 323Z
+                                "
+                            />
+
+                            <!-- NEW BRUNSWICK -->
+                            <path
+                                class="province"
+                                data-p="NB"
+                                d="
+                                    M738 425
+                                    752 421 767 427 777 439
+                                    790 448 779 464 762 472
+                                    740 466 733 450Z
+                                "
+                            />
+
+                            <!-- NOVA SCOTIA -->
+                            <path
+                                class="province"
+                                data-p="NS"
+                                d="
+                                    M775 483
+                                    795 480 812 469 832 467
+                                    846 478 835 488 823 493
+                                    816 509 802 518 790 512
+                                    783 501Z
+                                "
+                            />
+
+                            <!-- PRINCE EDWARD ISLAND -->
+                            <path
+                                class="province"
+                                data-p="PE"
+                                d="
+                                    M798 435
+                                    810 431 827 433 838 438
+                                    823 445 808 446Z
+                                "
+                            />
+
+                            <!-- NEWFOUNDLAND AND LABRADOR -->
+                            <path
+                                class="province"
+                                data-p="NL"
+                                d="
+                                    M746 317
+                                    756 299 770 288 786 293
+                                    799 313 809 330 797 345
+                                    782 362 768 370 749 355
+                                    744 338Z
+
+                                    M816 278
+                                    827 259 847 251 857 231
+                                    879 238 893 255 902 269
+                                    892 291 885 311 867 324
+                                    849 333 835 319 819 305Z
+                                "
+                            />
+
+                        </g>
+
+                        <!-- PROVINCE LABELS -->
+                        <g id="labels">
+
+                            <text class="maplabel" data-p="YT" x="135" y="181">YT</text>
+                            <text class="maplabel" data-p="NT" x="272" y="192">NT</text>
+                            <text class="maplabel" data-p="NU" x="480" y="173">NU</text>
+
+                            <text class="maplabel" data-p="BC" x="121" y="350">BC</text>
+                            <text class="maplabel" data-p="AB" x="236" y="377">AB</text>
+                            <text class="maplabel" data-p="SK" x="321" y="379">SK</text>
+                            <text class="maplabel" data-p="MB" x="409" y="378">MB</text>
+                            <text class="maplabel" data-p="ON" x="552" y="393">ON</text>
+                            <text class="maplabel" data-p="QC" x="660" y="338">QC</text>
+
+                            <text class="maplabel" data-p="NB" x="759" y="451">NB</text>
+                            <text class="maplabel" data-p="NS" x="815" y="494">NS</text>
+                            <text class="maplabel" data-p="PE" x="819" y="424">PE</text>
+                            <text class="maplabel" data-p="NL" x="854" y="296">NL</text>
+
+                        </g>
+
+                        <!-- CITY DOTS GENERATED BY JAVASCRIPT -->
+                        <g id="dots"></g>
+
+                    </svg>
+
+                </div>
+
+                <!-- MAP NOTE -->
+                <div class="mapnote">
+                    Stylized geographic map. Not official boundaries.
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- PROVINCE CLOCK GRID HEADING -->
+        <div class="gridhead">
+
+            <h2>
+                All provinces &amp; territories
+            </h2>
+
+            <span style="font-size: 14px; color: #718092">
+                13 live clocks
+            </span>
+
+        </div>
+
+        <!-- CLOCK CARDS GENERATED BY JAVASCRIPT -->
+        <div class="clockgrid" id="cards"></div>
+
+        
+        <!-- FOOTER -->
+        <div class="foot">
+
+            <div class="footer-info">
+                Some provinces and territories have multiple local exceptions.
+            </div>
+
+            <div class="footer-copyright">
+                &copy; 2026 TimeCanada.ca
+            </div>
+
+        </div>
+
+
+    </main>
+
+    <!-- JAVASCRIPT -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
