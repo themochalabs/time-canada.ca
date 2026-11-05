@@ -1,4 +1,7 @@
 
+// TimeCanada.ca — Complete JavaScript
+// Updated for November 2026 Canadian time-zone changes.
+
 const regions = [
   {
     id: "BC",
@@ -14,18 +17,18 @@ const regions = [
       ["Colwood", "America/Vancouver"],
       ["Coquitlam", "America/Vancouver"],
       ["Courtenay", "America/Vancouver"],
-      ["Cranbrook", "America/Vancouver"],
+      ["Cranbrook", "America/Denver"],
       ["Dawson Creek", "America/Dawson_Creek"],
       ["Delta", "America/Vancouver"],
       ["Duncan", "America/Vancouver"],
       ["Enderby", "America/Vancouver"],
-      ["Fernie", "America/Vancouver"],
+      ["Fernie", "America/Denver"],
       ["Fort St. John", "America/Dawson_Creek"],
       ["Grand Forks", "America/Vancouver"],
       ["Greenwood", "America/Vancouver"],
       ["Kamloops", "America/Vancouver"],
       ["Kelowna", "America/Vancouver"],
-      ["Kimberley", "America/Vancouver"],
+      ["Kimberley", "America/Denver"],
       ["Langford", "America/Vancouver"],
       ["Langley", "America/Vancouver"],
       ["Maple Ridge", "America/Vancouver"],
@@ -449,7 +452,7 @@ const regions = [
   }
 ];
 
-// Representative markers on the stylized SVG map.
+// SVG map marker positions
 const dots = {
   BC: [125, 395],
   AB: [232, 412],
@@ -473,14 +476,108 @@ let clockFormat = "12";
 
 const $ = id => document.getElementById(id);
 
-// Format time using the browser's time-zone database.
-const fmt = (tz, opts) =>
-  new Intl.DateTimeFormat("en-CA", {
-    timeZone: tz,
-    ...opts
-  }).format(new Date());
+// Permanent time-zone rules beginning November 2026.
+// Etc/GMT zones use reversed signs:
+// Etc/GMT+7 = UTC-7.
 
-// Select a province or territory and its city.
+const permanentZones = {
+  "America/Vancouver": {
+    start: Date.parse("2026-11-01T09:00:00Z"),
+    zone: "Etc/GMT+7",
+    label: "PCT",
+    long: "Pacific Time"
+  },
+
+  "America/Edmonton": {
+    start: Date.parse("2026-11-01T08:00:00Z"),
+    zone: "Etc/GMT+6",
+    label: "ABT",
+    long: "Alberta Time"
+  },
+
+  "America/Winnipeg": {
+    start: Date.parse("2026-11-01T07:00:00Z"),
+    zone: "Etc/GMT+5",
+    label: "MBT",
+    long: "Manitoba Standard Time"
+  },
+
+  "America/Yellowknife": {
+    start: Date.parse("2026-11-01T08:00:00Z"),
+    zone: "Etc/GMT+6",
+    label: "UTC−6",
+    long: "Northwest Territories Time"
+  }
+};
+
+// Determine if a permanent time-zone rule applies
+function permanentRule(tz, now = new Date()) {
+  const rule = permanentZones[tz];
+
+  return rule && now.getTime() >= rule.start
+    ? rule
+    : null;
+}
+
+// Get the correct time zone
+function effectiveTimeZone(tz, now = new Date()) {
+  return permanentRule(tz, now)?.zone || tz;
+}
+
+// Format date and time
+function fmt(tz, opts, now = new Date()) {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: effectiveTimeZone(tz, now),
+    ...opts
+  }).format(now);
+}
+
+// Get the browser's native time-zone name
+function nativeZoneName(tz, style, now = new Date()) {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: tz,
+    timeZoneName: style
+  });
+
+  return formatter.formatToParts(now)
+    .find(p => p.type === "timeZoneName")?.value || "";
+}
+
+// Get the appropriate time-zone label
+function zoneLabel(regionId, tz, long = false, now = new Date()) {
+  const rule = permanentRule(tz, now);
+
+  if (tz === "America/Whitehorse") {
+    return long ? "Yukon Standard Time" : "YST";
+  }
+
+  if (rule) {
+    // Northwestern Ontario follows the Manitoba offset,
+    // but should not be labelled Manitoba Standard Time.
+    if (regionId === "ON" && tz === "America/Winnipeg") {
+      return long
+        ? "Northwestern Ontario Time (UTC−5)"
+        : "UTC−5";
+    }
+
+    // Saskatchewan-side Lloydminster
+    if (regionId === "SK" && tz === "America/Edmonton") {
+      return long
+        ? "Lloydminster Time (UTC−6)"
+        : "UTC−6";
+    }
+
+    return long ? rule.long : rule.label;
+  }
+
+  return nativeZoneName(
+    tz,
+    long ? "long" : "short",
+    now
+  );
+}
+
+// Select province or territory
 function selectRegion(id, idx = 0) {
   selectedRegion = id;
   selectedCity = idx;
@@ -490,7 +587,7 @@ function selectRegion(id, idx = 0) {
   tick();
 }
 
-// Populate province and city dropdowns.
+// Populate dropdowns
 function renderSelects() {
   $("province").innerHTML = regions.map(r =>
     `<option value="${r.id}">${r.name}</option>`
@@ -507,7 +604,7 @@ function renderSelects() {
   $("city").value = selectedCity;
 }
 
-// Highlight the selected province on the map and grid.
+// Highlight selected province
 function renderActive() {
   document.querySelectorAll(
     ".province,.maplabel,.citydot,.clockcard"
@@ -524,8 +621,9 @@ function renderActive() {
     `${r.cities[selectedCity][0]}, ${r.name}`;
 }
 
-// Update the featured clock and all 13 region clocks.
+// Update featured clock and 13 province clocks
 function tick() {
+  const now = new Date();
   const r = regions.find(r => r.id === selectedRegion);
   const tz = r.cities[selectedCity][1];
 
@@ -536,42 +634,45 @@ function tick() {
     hour12: clockFormat === "12"
   };
 
-  $("featuredClock").textContent = fmt(tz, opt);
+  // Featured clock
+  $("featuredClock").textContent = fmt(tz, opt, now);
 
+  // Featured date
   $("featuredDate").textContent = fmt(tz, {
     weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric"
-  });
+  }, now);
 
-  $("featuredZone").textContent = fmt(tz, {
-    timeZoneName: "long"
-  }).split(" at ").pop()
-    .replace(/^.*? (\b(?:Standard|Daylight) Time\b)$/, "$1");
+  // Featured time-zone description
+  $("featuredZone").textContent =
+    zoneLabel(selectedRegion, tz, true, now);
 
+  // Update all 13 clock cards
   regions.forEach(x => {
-    const el = document.getElementById("clock-" + x.id);
+    const el = $("clock-" + x.id);
 
-    if (el) {
-      el.querySelector(".time").textContent = fmt(
-        x.cities[0][1],
-        {
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: clockFormat === "12"
-        }
-      );
+    if (!el) return;
 
-      el.querySelector(".zone").textContent = fmt(
-        x.cities[0][1],
-        { timeZoneName: "short" }
-      ).split(" ").pop();
-    }
+    const cityTZ = x.cities[0][1];
+
+    el.querySelector(".time").textContent = fmt(
+      cityTZ,
+      {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: clockFormat === "12"
+      },
+      now
+    );
+
+    el.querySelector(".zone").textContent =
+      zoneLabel(x.id, cityTZ, false, now);
   });
 }
 
-// Build all 13 province and territory clock cards.
+// Build clock cards
 $("cards").innerHTML = regions.map(r => `
   <button
     class="clockcard"
@@ -587,19 +688,19 @@ $("cards").innerHTML = regions.map(r => `
   </button>
 `).join("");
 
-// Clock-card click handlers.
+// Clock-card click handlers
 document.querySelectorAll(".clockcard").forEach(el => {
   el.onclick = () => selectRegion(el.dataset.p);
 });
 
-// Province-map click handlers.
+// Province map click handlers
 document.querySelectorAll(".province").forEach(el => {
   el.addEventListener("click", () => {
     selectRegion(el.dataset.p);
   });
 });
 
-// Add interactive city dots to the SVG map.
+// Add interactive city dots to SVG
 const svgNS = "http://www.w3.org/2000/svg";
 
 Object.entries(dots).forEach(([id, xy]) => {
@@ -619,23 +720,23 @@ Object.entries(dots).forEach(([id, xy]) => {
   $("dots").appendChild(c);
 });
 
-// Province dropdown.
+// Province dropdown
 $("province").onchange = e => {
   selectRegion(e.target.value);
 };
 
-// City dropdown.
+// City dropdown
 $("city").onchange = e => {
   selectRegion(selectedRegion, Number(e.target.value));
 };
 
-// 12-hour / 24-hour clock format.
+// 12-hour / 24-hour format
 $("format").onchange = e => {
   clockFormat = e.target.value;
   tick();
 };
 
-// Search cities and provinces.
+// Search cities and provinces
 $("search").addEventListener("input", e => {
   const q = e.target.value.trim().toLowerCase();
 
@@ -661,8 +762,8 @@ $("search").addEventListener("input", e => {
   }
 });
 
-// Initialize with Ontario selected.
+// Initialize Ontario
 selectRegion("ON");
 
-// Update every second.
+// Update clocks every second
 setInterval(tick, 1000);
