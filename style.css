@@ -314,7 +314,7 @@ svg {
 .feature .clock {
     font-size: clamp(44px, 5vw, 66px);
     font-weight: 750;
-    letter-spacing: 5px;
+    letter-spacing: 2px;
     font-variant-numeric: tabular-nums;
     margin: 13px 0 3px;
 }
